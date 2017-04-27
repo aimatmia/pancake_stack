@@ -3,7 +3,7 @@ from matrix import *
 from draw import *
 from copy import deepcopy
 
-ARG_COMMANDS = [ 'line', 'scale', 'move', 'rotate', 'save', 'circle', 'bezier', 'hermite', 'box', 'sphere', 'torus', 'pop', 'push' ]
+ARG_COMMANDS = [ 'line', 'scale', 'move', 'rotate', 'save', 'circle', 'bezier', 'hermite', 'box', 'sphere', 'torus' ]
 
 def parse_file( fname, edges, transform, screen, color ):
 
