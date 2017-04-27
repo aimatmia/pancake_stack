@@ -3,7 +3,7 @@ from matrix import *
 from draw import *
 from copy import deepcopy
 
-ARG_COMMANDS = [ 'line', 'scale', 'move', 'rotate', 'save', 'circle', 'bezier', 'hermite', 'box', 'sphere', 'torus' ]
+ARG_COMMANDS = [ 'line', 'scale', 'move', 'rotate', 'save', 'circle', 'bezier', 'hermite', 'box', 'sphere', 'torus', 'pop', 'push' ]
 
 def parse_file( fname, edges, transform, screen, color ):
 
@@ -18,8 +18,10 @@ def parse_file( fname, edges, transform, screen, color ):
         matrix_mult(stack[-1], edges)
         if is_flat:
             draw_lines(edges, screen, color)
-        draw_polygons(edges, screen, color)
+        else:
+            draw_polygons(edges, screen, color)
         edges[:] = []
+
         
     step = 0.1
     c = 0
@@ -40,7 +42,8 @@ def parse_file( fname, edges, transform, screen, color ):
                 print 'cannot pop ident stack'
 
         elif line == 'push':
-            stack.append(deepcopy(stack[-1]))                                                                                                              
+            stack.append(deepcopy(stack[-1]))
+
         elif line == 'sphere':
             #print 'SPHERE\t' + str(args)
             add_sphere(edges,
@@ -55,7 +58,6 @@ def parse_file( fname, edges, transform, screen, color ):
                       float(args[3]), float(args[4]), step)
             new_coord()
         elif line == 'box':
-            print 'BOX\t' + str(args)
             add_box(edges,
                     float(args[0]), float(args[1]), float(args[2]),
                     float(args[3]), float(args[4]), float(args[5]))
@@ -64,7 +66,7 @@ def parse_file( fname, edges, transform, screen, color ):
             #print 'CIRCLE\t' + str(args)
             add_circle(edges,
                        float(args[0]), float(args[1]), float(args[2]),
-                       float(args[3]), step)
+                       float(args[3]), 0.005)
             new_coord(True)
 
         elif line == 'hermite' or line == 'bezier':
@@ -86,12 +88,15 @@ def parse_file( fname, edges, transform, screen, color ):
         elif line == 'scale':
             #print 'SCALE\t' + str(args)
             t = make_scale(float(args[0]), float(args[1]), float(args[2]))
-            matrix_mult(t, stack[-1])
+            matrix_mult(stack[-1], t)
+            stack[-1] = t
 
         elif line == 'move':
             #print 'MOVE\t' + str(args)
             t = make_translate(float(args[0]), float(args[1]), float(args[2]))
-            matrix_mult(t, stack[-1])
+            matrix_mult(stack[-1], t)
+            stack[-1] = t
+
 
         elif line == 'rotate':
             #print 'ROTATE\t' + str(args)
@@ -103,7 +108,9 @@ def parse_file( fname, edges, transform, screen, color ):
                 t = make_rotY(theta)
             else:
                 t = make_rotZ(theta)
-            matrix_mult(t, stack[-1])
+            matrix_mult(stack[-1], t)
+            stack[-1] = t
+
                 
         elif line == 'clear':
             edges = []
