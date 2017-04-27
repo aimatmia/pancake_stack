@@ -19,7 +19,7 @@ def add_polygon( points, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(points, x2, y2, z2)
 
 def draw_polygons( points, screen, color ):
-    if len(matrix) < 3:
+    if len(points) < 3:
         print "Need at least 3 points to draw polygons"
         return
         
@@ -198,19 +198,19 @@ def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
         y0 = y
         t += step
 
-def draw_lines( matrix, screen, color ):
-    if len(matrix) < 2:
+def draw_lines( points, screen, color ):
+    if len(points) < 2:
         print 'Need at least 2 points to draw'
         return
     
-    point = 0
-    while point < len(matrix) - 1:
-        draw_line( int(matrix[point][0]),
-                   int(matrix[point][1]),
-                   int(matrix[point+1][0]),
-                   int(matrix[point+1][1]),
+    i = 0
+    while i < len(points) - 1:
+        draw_line( int(points[i][0]),
+                   int(points[i][1]),
+                   int(points[i+1][0]),
+                   int(points[i+1][1]),
                    screen, color)    
-        point+= 2
+        i+= 2
         
 def add_edge( matrix, x0, y0, z0, x1, y1, z1 ):
     add_point(matrix, x0, y0, z0)
