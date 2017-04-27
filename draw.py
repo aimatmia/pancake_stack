@@ -35,30 +35,12 @@ def draw_polygons( matrix, screen, color ):
         v20 = [p2[0]-p0[0], p2[1]-p0[1], p2[2]-p0[2]]
         surface = cross_prod( v10, v20 )
         if dot_prod(surface, vector) < 0:
-          draw_line(p0[0], p0[1],
+            draw_line(p0[0], p0[1],
                   p1[0], p1[1], screen, color)
-          draw_line(p1[0], p1[1],
+            draw_line(p1[0], p1[1],
                   p2[0], p2[1], screen, color)
-          draw_line(p2[0], p2[1],
+            draw_line(p2[0], p2[1],
                   p0[0], p0[1], screen, color)
-       
-       '''
-        draw_line( int(matrix[point][0]),
-                   int(matrix[point][1]),
-                   int(matrix[point+1][0]),
-                   int(matrix[point+1][1]),
-                   screen, color)    
-        draw_line( int(matrix[point+1][0]),
-                   int(matrix[point+1][1]),
-                   int(matrix[point+2][0]),
-                   int(matrix[point+2][1]),
-                   screen, color)    
-        draw_line(  int(matrix[point+2][0]),
-                   int(matrix[point+2][1]),
-                   int(matrix[point][0]),
-                   int(matrix[point][1]),
-                   screen, color)
-        '''
         point+= 3
     
 
