@@ -15,6 +15,7 @@ move
 sphere
 0 0 0 50
 pop
+display
 #LEFT ARM
 push
 move
