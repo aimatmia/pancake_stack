@@ -23,25 +23,28 @@ def draw_polygons( matrix, screen, color ):
         print "Need at least 3 points to draw polygons"
         return
         
-    point = 0
-    vector = [0, 0, 1]
-    
-    while point < len(matrix) - 1:
-        p0 = matrix[point]
-        p1 = matrix[point+1]
-        p2 = matrix[point+2]
+    i = 0    
+    while i < len(points):
+        x0 = points[i][0]
+        x1 = points[i+1][0]
+        x2 = points[i+2][0]
+        y0 = points[i][1]
+        y1 = points[i+1][1]
+        y2 = points[i+2][1]
         
-        v10 = [p1[0]-p0[0], p1[1]-p0[1], p1[2]-p0[2]]
-        v20 = [p2[0]-p0[0], p2[1]-p0[1], p2[2]-p0[2]]
-        surface = cross_prod( v10, v20 )
-        if dot_prod(surface, vector) < 0:
-            draw_line(p0[0], p0[1],
-                  p1[0], p1[1], screen, color)
-            draw_line(p1[0], p1[1],
-                  p2[0], p2[1], screen, color)
-            draw_line(p2[0], p2[1],
-                  p0[0], p0[1], screen, color)
-        point+= 3
+        prod = (x1-x0)*(y2-y0) - (y1-y0)*(x2-x0)
+        
+        if prod >= 0:
+            draw_line(int(points[i][0]), int(points[i][1]),
+                      int(points[i+1][0]), int(points[i+1][1]),
+                      screen, color)
+            draw_line(int(points[i][0]), int(points[i][1]),
+                      int(points[i+2][0]), int(points[i+2][1]),
+                      screen, color)
+            draw_line(int(points[i+2][0]), int(points[i+2][1]),
+                      int(points[i+1][0]), int(points[i+1][1]),
+                      screen, color)
+        i+=3
     
 
 def add_box( points, x, y, z, w, h, d ):
