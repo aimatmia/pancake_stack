@@ -14,7 +14,7 @@ def parse_file( fname, edges, transform, screen, color ):
     new_m = new_matrix()
     ident(new_m)
     print_matrix(new_m)
-    cstack.append(new_m)
+    stack.append(new_m)
     
     step = 0.1
     c = 0
