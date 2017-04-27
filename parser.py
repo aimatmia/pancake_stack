@@ -42,7 +42,7 @@ def parse_file( fname, edges, transform, screen, color ):
             add_sphere(edges,
                        float(args[0]), float(args[1]), float(args[2]),
                        float(args[3]), step)
-            matrix_mult( cstack[-1], edges )
+            matrix_mult( stack[-1], edges )
             draw_polygons(edges, screen, color)
             edges = []
             
@@ -51,7 +51,7 @@ def parse_file( fname, edges, transform, screen, color ):
             add_torus(edges,
                       float(args[0]), float(args[1]), float(args[2]),
                       float(args[3]), float(args[4]), step)
-            matrix_mult( cstack[-1], edges )
+            matrix_mult( stack[-1], edges )
             draw_polygons(edges, screen, color)
             edges = []
 
@@ -59,7 +59,7 @@ def parse_file( fname, edges, transform, screen, color ):
             add_box(edges,
                     float(args[0]), float(args[1]), float(args[2]),
                     float(args[3]), float(args[4]), float(args[5]))
-            matrix_mult( cstack[-1], edges )
+            matrix_mult( stack[-1], edges )
             draw_polygons(edges, screen, color)
             edges = []
 
@@ -68,7 +68,7 @@ def parse_file( fname, edges, transform, screen, color ):
             add_circle(edges,
                        float(args[0]), float(args[1]), float(args[2]),
                        float(args[3]), 0.005)
-            matrix_mult( cstack[-1], edges )
+            matrix_mult( stack[-1], edges )
             draw_polygons(edges, screen, color)
             edges = []
 
