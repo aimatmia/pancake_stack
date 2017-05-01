@@ -39,7 +39,7 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
             
         elif line == 'torus':
             #print 'TORUS\t' + str(args)
-            add_torus(edges,
+            add_torus(polygons,
                       float(args[0]), float(args[1]), float(args[2]),
                       float(args[3]), float(args[4]), step)
             matrix_mult( stack[-1], polygons)
@@ -47,7 +47,7 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
             polygons[:] = []
 
         elif line == 'box':
-            add_box(edges,
+            add_box(polygons,
                     float(args[0]), float(args[1]), float(args[2]),
                     float(args[3]), float(args[4]), float(args[5]))
             matrix_mult( stack[-1], polygons)
