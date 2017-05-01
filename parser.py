@@ -28,16 +28,7 @@ def parse_file( fname, edges, transform, screen, color ):
             args = lines[c].strip().split(' ')
             #print 'args\t' + str(args)
 
-        if line == 'pop':
-            if len(stack) > 1:
-                stack.pop()
-            else:
-                print 'cannot pop ident stack'
-
-        elif line == 'push':
-            stack.append(deepcopy(stack[-1]))
-
-        elif line == 'sphere':
+        if line == 'sphere':
             #print 'SPHERE\t' + str(args)
             add_sphere(edges,
                        float(args[0]), float(args[1]), float(args[2]),
@@ -114,6 +105,15 @@ def parse_file( fname, edges, transform, screen, color ):
             else:
                 t = make_rotZ(theta)
             matrix_mult(t, stack[-1])
+         
+        elif line == 'pop':
+            if len(stack) > 1:
+                stack.pop()
+            else:
+                print 'cannot pop ident stack'
+
+        elif line == 'push':
+            stack.append(deepcopy(stack[-1]))
 
                 
         elif line == 'clear':
