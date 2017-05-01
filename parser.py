@@ -10,11 +10,10 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
     f = open(fname)
     lines = f.readlines()
 
-    stack = []
     new_m = new_matrix()
     ident(new_m)
     print_matrix(new_m)
-    stack.append(new_m)
+    stack = [new_m]
     
     step = 0.1
     c = 0
@@ -28,7 +27,16 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
             args = lines[c].strip().split(' ')
             #print 'args\t' + str(args)
 
-        if line == 'sphere':
+        if line == 'push':
+            stack.append(deepcopy(stack[-1]))
+            
+        elif line == 'pop':
+            if len(stack) > 1:
+                stack.pop()
+            else:
+                print 'cannot pop ident stack'
+            
+        elif line == 'sphere':
             #print 'SPHERE\t' + str(args)
             add_sphere(polygons,
                        float(args[0]), float(args[1]), float(args[2]),
@@ -108,16 +116,6 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
                 t = make_rotZ(theta)
             matrix_mult(stack[-1], t)
             stack[-1] = t
-         
-        elif line == 'pop':
-            if len(stack) > 1:
-                stack.pop()
-            else:
-                print 'cannot pop ident stack'
-
-        elif line == 'push':
-            stack.append(deepcopy(stack[-1]))
-
                 
         elif line == 'clear':
             edges = []
