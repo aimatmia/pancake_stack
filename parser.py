@@ -5,7 +5,7 @@ from copy import deepcopy
 
 ARG_COMMANDS = [ 'line', 'scale', 'move', 'rotate', 'save', 'circle', 'bezier', 'hermite', 'box', 'sphere', 'torus' ]
 
-def parse_file( fname, edges, transform, screen, color ):
+def parse_file( fname, edges, polygons, transform, screen, color ):
 
     f = open(fname)
     lines = f.readlines()
@@ -30,29 +30,29 @@ def parse_file( fname, edges, transform, screen, color ):
 
         if line == 'sphere':
             #print 'SPHERE\t' + str(args)
-            add_sphere(edges,
+            add_sphere(polygons,
                        float(args[0]), float(args[1]), float(args[2]),
                        float(args[3]), step)
-            matrix_mult( stack[-1], edges )
-            draw_polygons(edges, screen, color)
-            edges = []
+            matrix_mult( stack[-1], polygons )
+            draw_polygons(polygons, screen, color)
+            polygons[:] = []
             
         elif line == 'torus':
             #print 'TORUS\t' + str(args)
             add_torus(edges,
                       float(args[0]), float(args[1]), float(args[2]),
                       float(args[3]), float(args[4]), step)
-            matrix_mult( stack[-1], edges )
-            draw_polygons(edges, screen, color)
-            edges = []
+            matrix_mult( stack[-1], polygons)
+            draw_polygons(polygons, screen, color)
+            polygons[:] = []
 
         elif line == 'box':
             add_box(edges,
                     float(args[0]), float(args[1]), float(args[2]),
                     float(args[3]), float(args[4]), float(args[5]))
-            matrix_mult( stack[-1], edges )
-            draw_polygons(edges, screen, color)
-            edges = []
+            matrix_mult( stack[-1], polygons)
+            draw_polygons(polygons, screen, color)
+            polygons[:] = []
 
         elif line == 'circle':
             #print 'CIRCLE\t' + str(args)
@@ -61,7 +61,7 @@ def parse_file( fname, edges, transform, screen, color ):
                        float(args[3]), 0.005)
             matrix_mult( stack[-1], edges )
             draw_polygons(edges, screen, color)
-            edges = []
+            edges[:] = []
 
         elif line == 'hermite' or line == 'bezier':
             #print 'curve\t' + line + ": " + str(args)
@@ -73,7 +73,7 @@ def parse_file( fname, edges, transform, screen, color ):
                       step, line)   
             matrix_mult( cstack[-1], edges )
             draw_polygons(edges, screen, color)
-            edges = []
+            edges[:] = []
 
         elif line == 'line':            
             #print 'LINE\t' + str(args)
@@ -82,17 +82,19 @@ def parse_file( fname, edges, transform, screen, color ):
                       float(args[0]), float(args[1]), float(args[2]),
                       float(args[3]), float(args[4]), float(args[5]) )
             matrix_mult( cstack[-1], edges )
-            edges = []
+            edges[:] = []
 
         elif line == 'scale':
             #print 'SCALE\t' + str(args)
             t = make_scale(float(args[0]), float(args[1]), float(args[2]))
-            matrix_mult(t, stack[-1])
+            matrix_mult(stack[-1], t)
+            stack[-1] = t
 
         elif line == 'move':
             #print 'MOVE\t' + str(args)
             t = make_translate(float(args[0]), float(args[1]), float(args[2]))
-            matrix_mult(t, stack[-1])
+            matrix_mult(stack[-1], t)
+            stack[-1] = t
 
         elif line == 'rotate':
             #print 'ROTATE\t' + str(args)
@@ -104,7 +106,8 @@ def parse_file( fname, edges, transform, screen, color ):
                 t = make_rotY(theta)
             else:
                 t = make_rotZ(theta)
-            matrix_mult(t, stack[-1])
+            matrix_mult(stack[-1], t)
+            stack[-1] = t
          
         elif line == 'pop':
             if len(stack) > 1:
@@ -120,7 +123,7 @@ def parse_file( fname, edges, transform, screen, color ):
             edges = []
             
         elif line == 'ident':
-            ident(transform)
+            ident(stack)
 
         elif line == 'apply':
             matrix_mult( stack[-1], edges )
