@@ -1,17 +1,6 @@
 from display import *
 from matrix import *
 from math import *
-
-def cross_prod(a,b):
-    return [a[1]*b[2] - a[2]*b[1],
-            a[2]*b[0] - a[0]*b[2],
-            a[0]*b[1] - a[1]*b[0]]
-
-def dot_prod(a,b):
-    return a[0]*b[0] + a[1]*b[1] + a[2]*b[2]
-
-def scalar_prod(k,a):
-    return [k*a[0], k*a[1], k*a[2]]
     
 def add_polygon( points, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(points, x0, y0, z0)
@@ -26,6 +15,7 @@ def draw_polygons( points, screen, color ):
     i = 0    
     while i < len(points) - 2:
         
+        prod = 0
         p0 = points[i]
         p1 = points[i+1]
         p2 = points[i+2]
