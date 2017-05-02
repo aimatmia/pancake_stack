@@ -80,14 +80,14 @@ def add_sphere( edges, cx, cy, cz, r, step ):
             p3 = points[(index + 1) % sphere] 
 
             if longt != longt_stop:
-            add_polygon(edges, p0[0], p0[1], p0[2],
-                        p1[0], p1[1], p1[2],
-                        p2[0], p2[1], p2[2])
+                add_polygon(edges, p0[0], p0[1], p0[2],
+                            p1[0], p1[1], p1[2],
+                            p2[0], p2[1], p2[2])
             
             if lat != lat_stop - 1:
-            add_polygon(edges, p2[0], p2[1], p2[2],
-                        p3[0], p3[1], p3[2],
-                        p0[0], p0[1], p0[2])
+                add_polygon(edges, p2[0], p2[1], p2[2],
+                            p3[0], p3[1], p3[2],
+                            p0[0], p0[1], p0[2])
 
 def generate_sphere( cx, cy, cz, r, step ):
     points = [] 
@@ -131,14 +131,14 @@ def add_torus( edges, cx, cy, cz, r0, r1, step ):
             p3 = points[(index+num_steps+1)%sphere] 
 
             if longt != longt_stop:
-            add_polygon(edges, p1[0], p1[1], p1[2],
-                        p2[0], p2[1], p2[2],
-                        p0[0], p0[1], p0[2])
+                add_polygon(edges, p1[0], p1[1], p1[2],
+                            p2[0], p2[1], p2[2],
+                            p0[0], p0[1], p0[2])
             
             if lat != lat_stop - 1:
-            add_polygon(edges, p2[0], p2[1], p2[2],
-                        p1[0], p1[1], p1[2],
-                        p3[0], p3[1], p3[2])
+                add_polygon(edges, p2[0], p2[1], p2[2],
+                            p1[0], p1[1], p1[2],
+                            p3[0], p3[1], p3[2])
 
 def generate_torus( cx, cy, cz, r0, r1, step ):
     points = []
