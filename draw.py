@@ -72,7 +72,7 @@ def add_sphere( edges, cx, cy, cz, r, step ):
     num_steps+= 1
     for lat in range(lat_start, lat_stop):
         for longt in range(longt_start, longt_stop):
-            index = lat * num_steps + long
+            index = lat * num_steps + longt
             sphere = len(points)
             p0 = points[index] 
             p1 = points[(index + num_steps) % sphere] 
