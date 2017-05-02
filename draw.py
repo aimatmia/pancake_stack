@@ -27,7 +27,7 @@ def draw_polygons( points, screen, color ):
             prod = d1[0]*d2[1]-d1[1]*d2[0]
         
         if prod > 0:
-            draw_line(int(p0[0]), int(p0[i][1]),
+            draw_line(int(p0[0]), int(p0[1]),
                       int(p1[0]), int(p1[1]), screen, color)
             draw_line(int(p0[0]), int(p0[1]),
                       int(p2[0]), int(p2[1]), screen, color)
@@ -79,12 +79,12 @@ def add_sphere( edges, cx, cy, cz, r, step ):
             p2 = points[(index + num_steps + 1) % sphere] 
             p3 = points[(index + 1) % sphere] 
 
-            if longt != longt_stop:
+            #if longt != longt_stop:
                 add_polygon(edges, p0[0], p0[1], p0[2],
                             p1[0], p1[1], p1[2],
                             p2[0], p2[1], p2[2])
             
-            if lat != lat_stop - 1:
+            #if lat != lat_stop - 1:
                 add_polygon(edges, p2[0], p2[1], p2[2],
                             p3[0], p3[1], p3[2],
                             p0[0], p0[1], p0[2])
@@ -130,12 +130,12 @@ def add_torus( edges, cx, cy, cz, r0, r1, step ):
             p2 = points[(index+num_steps)%sphere] 
             p3 = points[(index+num_steps+1)%sphere] 
 
-            if longt != longt_stop:
+            #if longt != longt_stop:
                 add_polygon(edges, p1[0], p1[1], p1[2],
                             p2[0], p2[1], p2[2],
                             p0[0], p0[1], p0[2])
             
-            if lat != lat_stop - 1:
+            #if lat != lat_stop - 1:
                 add_polygon(edges, p2[0], p2[1], p2[2],
                             p1[0], p1[1], p1[2],
                             p3[0], p3[1], p3[2])
