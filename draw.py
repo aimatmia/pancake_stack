@@ -24,26 +24,25 @@ def draw_polygons( points, screen, color ):
         return
         
     i = 0    
-    while i < len(points):
-        x0 = points[i][0]
-        x1 = points[i+1][0]
-        x2 = points[i+2][0]
-        y0 = points[i][1]
-        y1 = points[i+1][1]
-        y2 = points[i+2][1]
+    while i < len(points) - 2:
         
-        prod = (x1-x0)*(y2-y0) - (y1-y0)*(x2-x0)
+        p0 = points[i]
+        p1 = points[i+1]
+        p2 = points[i+2]
         
-        if prod >= 0:
-            draw_line(int(points[i][0]), int(points[i][1]),
-                      int(points[i+1][0]), int(points[i+1][1]),
-                      screen, color)
-            draw_line(int(points[i][0]), int(points[i][1]),
-                      int(points[i+2][0]), int(points[i+2][1]),
-                      screen, color)
-            draw_line(int(points[i+2][0]), int(points[i+2][1]),
-                      int(points[i+1][0]), int(points[i+1][1]),
-                      screen, color)
+        if len(p0) > 4:
+            d1 = [p1[0]-p0[0],p1[1]-p0[1],p1[2]-p0[2]]
+            d2 = [p2[0]-p0[0],p2[1]-p0[1],p2[2]-p0[2]]
+        
+            prod = d1[0]*d2[1]-d1[1]*d2[0]
+        
+        if prod > 0:
+            draw_line(int(p0[0]), int(p0[i][1]),
+                      int(p1[0]), int(p1[1]), screen, color)
+            draw_line(int(p0[0]), int(p0[1]),
+                      int(p2[0]), int(p2[1]), screen, color)
+            draw_line(int(p2[0]), int(p2[1]),
+                      int(p1[0]), int(p1[1]), screen, color)
         i+=3
     
 
@@ -96,6 +95,10 @@ def add_sphere( edges, cx, cy, cz, r, step ):
             add_polygon(edges, p2[0], p2[1], p2[2],
                         p3[0], p3[1], p3[2],
                         p0[0], p0[1], p0[2])
+            if long != long_stop:
+                add_polygon(edges,x1,y1,z1,x2,y2,z2,x0,y0,z0,color)
+            if lat != lat_stop - 1:
+                add_polygon(edges,x2,y2,z2,x1,y1,z1,x3,y3,z3,color)
 
 def generate_sphere( cx, cy, cz, r, step ):
     points = [] 
@@ -144,6 +147,11 @@ def add_torus( edges, cx, cy, cz, r0, r1, step ):
             add_polygon(edges, p2[0], p2[1], p2[2],
                         p1[0], p1[1], p1[2],
                         p3[0], p3[1], p3[2])
+            
+            if long != long_stop:
+                add_polygon(edges,x1,y1,z1,x2,y2,z2,x0,y0,z0,color)
+            if lat != lat_stop-1:
+                add_polygon(edges,x2,y2,z2,x1,y1,z1,x3,y3,z3,color)
 
 def generate_torus( cx, cy, cz, r0, r1, step ):
     points = []
