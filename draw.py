@@ -47,59 +47,59 @@ def add_box( points, x, y, z, w, h, d ):
     z1 = z - d
     
     #front side
-    add_polygon(points, x, y, z, x, y1, z, x1, y1, z)
     add_polygon(points, x, y, z, x1, y1, z, x1, y, z)
+    add_polygon(points, x, y, z, x, y1, z, x1, y1, z)
     #back side
-    add_polygon(points, x, y, z1, x, y1, z1, x1, y1, z1)
-    add_polygon(points, x, y, z1, x1, y1, z1, x1, y, z1)
-    #left side
-    add_polygon(points, x, y, z1, x, y1, z1, x, y1, z)
-    add_polygon(points, x, y, z1, x, y1, z, x, y, z)
+    add_polygon(points, x1, y, z1, x, y1, z1, x, y, z1)
+    add_polygon(points, x1, y, z1, x1, y1, z1, x, y1, z1)
     #right side
+    add_polygon(points, x1, y, z, x1, y1, z1, x1, y, z1)
     add_polygon(points, x1, y, z, x1, y1, z, x1, y1, z1)
-    add_polygon(points, x1, y1, z1, x1, y, z1, x1, y, z)
+    #left side
+    add_polygon(points, x, y, z1, x, y1, z, x, y, z)
+    add_polygon(points, x, y, z1, x, y1, z1, x, y1, z)
     #top side
-    add_polygon(points, x, y, z1, x, y, z, x1, y, z)
     add_polygon(points, x, y, z1, x1, y, z, x1, y, z1)
+    add_polygon(points, x, y, z1, x, y, z, x1, y, z)
     #bottom side
-    add_polygon(points, x, y1, z1, x, y1, z, x1, y1, z)
-    add_polygon(points, x, y1, z1, x1, y1, z, x1, y1, z1)
-
+    add_polygon(points, x, y1, z, x1, y1, z1, x1, y1, z)
+    add_polygon(points, x, y1, z, x, y1, z1, x1, y1, z1)
+    
 def add_sphere( edges, cx, cy, cz, r, step ):
     points = generate_sphere(cx, cy, cz, r, step)
-    num_steps = int(1/step+0.1)
+    n_steps = int(1/step+0.1)
     
     lat_start = 0
+    lat_stop = n_steps
     longt_start = 0
-    lat_stop = num_steps
-    longt_stop = num_steps
+    longt_stop = n_steps
 
-    num_steps+= 1
+    n_steps+= 1
     for lat in range(lat_start, lat_stop):
         for longt in range(longt_start, longt_stop):
-            index = lat * num_steps + longt
-            sphere = len(points)
-            p0 = points[index] 
-            p1 = points[(index + num_steps) % sphere] 
-            p2 = points[(index + num_steps + 1) % sphere] 
-            p3 = points[(index + 1) % sphere] 
-
-            add_polygon(edges, p0[0], p0[1], p0[2],
-                        p1[0], p1[1], p1[2],
-                        p2[0], p2[1], p2[2])
             
-            add_polygon(edges, p2[0], p2[1], p2[2],
-                        p3[0], p3[1], p3[2],
-                        p0[0], p0[1], p0[2])
+            p0 = lat * (n_steps) + longt
+            p1 = p0+1
+            p2 = (p1+n_steps) % (n_steps * (n_steps-1))
+            p3 = (p0+n_steps) % (n_steps * (n_steps-1))
+
+            if longt != n_steps - 2:
+                add_polygon(edges, p0[0], p0[1], p0[2],
+                            p1[0], p1[1], p1[2],
+                            p2[0], p2[1], p2[2])
+            if longt != 0:
+                add_polygon(edges, p0[0], p0[1], p0[2],
+                        p2[0], p2[1], p2[2],
+                        p3[0], p3[1], p3[2])
 
 def generate_sphere( cx, cy, cz, r, step ):
     points = [] 
-    num_steps = int(1/step+0.1)
+    n_steps = int(1/step+0.1)
     
     rot_start = 0
     circ_start = 0
-    rot_stop = num_steps
-    circ_stop = num_steps 
+    rot_stop = n_steps
+    circ_stop = n_steps 
             
     for rotation in range(rot_start, rot_stop):
         rot = step * rotation
@@ -116,41 +116,40 @@ def generate_sphere( cx, cy, cz, r, step ):
         
 def add_torus( edges, cx, cy, cz, r0, r1, step ):
     points = generate_torus(cx, cy, cz, r0, r1, step)
-    num_steps = int(1/step+0.1)
+    n_steps = int(1/step+0.1)
     
     lat_start = 0
-    lat_stop = num_steps
+    lat_stop = n_steps
     longt_start = 0
-    longt_stop = num_steps
+    longt_stop = n_steps
     
     for lat in range(lat_start, lat_stop):
         for longt in range(longt_start, longt_stop):
-            index = lat * num_steps + longt
 
-            sphere = len(points)
-            p0 = points[index]
-            p1 = points[(index+1)%sphere]
-            p2 = points[(index+num_steps)%sphere] 
-            p3 = points[(index+num_steps+1)%sphere] 
+            p0 = lat * (n_steps) + longt;
+            if (longt == n_steps - 1):
+	        p1 = p0 - longt;
+            else:
+	        p1 = p0 + 1;
+            p2 = (p1 + n_steps) % (n_steps * n_steps);
+            p3 = (p0 + n_steps) % (n_steps * n_steps);
             
-            add_polygon(edges, p1[0], p1[1], p1[2],
+            add_polygon(edges, p0[0], p0[1], p0[2],
+                        p3[0], p3[1], p3[2],
+                        p2[0], p2[1], p2[2])
+            
+            add_polygon(edges, p0[0], p0[1], p0[2],
                         p2[0], p2[1], p2[2],
-                        p0[0], p0[1], p0[2])
-            
-            add_polygon(edges, p2[0], p2[1], p2[2],
-                        p1[0], p1[1], p1[2],
-                        p3[0], p3[1], p3[2])
+                        p1[0], p1[1], p1[2])
 
 def generate_torus( cx, cy, cz, r0, r1, step ):
     points = []
-    num_steps = int(1/step+0.1)
+    n_steps = int(1/step+0.1)
     
     rot_start = 0
-    rot_stop = num_steps
+    rot_stop = n_steps
     circ_start = 0
-    circ_stop = num_steps
-
-    print num_steps
+    circ_stop = n_steps
     
     for rotation in range(rot_start, rot_stop):
         rot = step * rotation
