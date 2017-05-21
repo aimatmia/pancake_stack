@@ -13,15 +13,25 @@ def draw_polygons( points, screen, color ):
         return
         
     i = 0    
-    while i < len(points):
-        
+    while i < len(points) - 2:
+        A = [0, 0, 0]
+        B = [0, 0, 0]
+        prod = [0, 0, 0]
+    
+        A[0] = polygons[i+1][0] - polygons[i][0]
+        A[1] = polygons[i+1][1] - polygons[i][1]
+
+        B[0] = polygons[i+2][0] - polygons[i][0]
+        B[1] = polygons[i+2][1] - polygons[i][1]
+
+        prod[2] = A[0] * B[1] - A[1] * B[0]
+
+        prod = prod[:]
         p0 = points[i]
         p1 = points[i+1]
         p2 = points[i+2]
-
-        prod = (p1[0]-p0[0])*(p2[1]-p0[1]) - (p1[1]-p0[1])*(p2[0]-p0[0])
         
-        if prod >= 0:
+        if prod[2] >= 0:
             draw_line(int(p0[0]), int(p0[1]),
                       int(p1[0]), int(p1[1]), screen, color)
             draw_line(int(p0[0]), int(p0[1]),
